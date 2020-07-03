@@ -379,8 +379,11 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
       
         
           
-          开发背景为了平台切换主题的功能，gulp构建针对不同颜色主题的css，但是不同的主题有不同的变量scss文件(modules-variables.scss, var.scss)，构建时需要手动操作文件，基于这个问题，在gulp构建时做了一些任务的处理（可在分支 mhyu-gulp查看）
-构建任务命令
+          案例该文章可结合我github上的demo一起看，更有效~戳我看demo
+开发背景为了实现切换主题的功能，不同的主题有不同的变量scss文件(var.scss)(gulp构建针对不同颜色主题的css)
+开发原理目前实现换肤方案的原理即通过切换不同命名空间（顶层class名）来达到样式的切换
+
+具体实
           ...
           <!--noindex-->
           <div class="post-button text-center">

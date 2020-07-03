@@ -105,26 +105,26 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 
 
 
-<meta name="description" content="开发背景为了平台切换主题的功能，gulp构建针对不同颜色主题的css，但是不同的主题有不同的变量scss文件(modules-variables.scss, var.scss)，构建时需要手动操作文件，基于这个问题，在gulp构建时做了一些任务的处理（可在分支 mhyu-gulp查看） 构建任务命令总结1.蓝色皮肤构建命令(包括移动文件和构建css)  gulp allPScss2.蓝色皮肤构建命">
+<meta name="description" content="案例该文章可结合我github上的demo一起看，更有效~戳我看demo 开发背景为了实现切换主题的功能，不同的主题有不同的变量scss文件(var.scss)(gulp构建针对不同颜色主题的css) 开发原理目前实现换肤方案的原理即通过切换不同命名空间（顶层class名）来达到样式的切换  具体实现1.定义一个切换ClassName的方法。2.通过gulp生成不同主题的css压缩文件。3.在ma">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gulp实现换肤功能">
 <meta property="og:url" content="http://yoursite.com/2020/07/02/gulp-skin/index.html">
 <meta property="og:site_name" content="Happy place">
-<meta property="og:description" content="开发背景为了平台切换主题的功能，gulp构建针对不同颜色主题的css，但是不同的主题有不同的变量scss文件(modules-variables.scss, var.scss)，构建时需要手动操作文件，基于这个问题，在gulp构建时做了一些任务的处理（可在分支 mhyu-gulp查看） 构建任务命令总结1.蓝色皮肤构建命令(包括移动文件和构建css)  gulp allPScss2.蓝色皮肤构建命">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot1.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot2.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot3.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot4.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot5.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot6.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot7.jpg">
-<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot8.jpg">
+<meta property="og:description" content="案例该文章可结合我github上的demo一起看，更有效~戳我看demo 开发背景为了实现切换主题的功能，不同的主题有不同的变量scss文件(var.scss)(gulp构建针对不同颜色主题的css) 开发原理目前实现换肤方案的原理即通过切换不同命名空间（顶层class名）来达到样式的切换  具体实现1.定义一个切换ClassName的方法。2.通过gulp生成不同主题的css压缩文件。3.在ma">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/blue.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/green.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/changeEvent.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/var.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/main.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/gulp.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/var.jpg">
+<meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/gulp3.jpg">
 <meta property="article:published_time" content="2020-07-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-03T08:21:48.177Z">
+<meta property="article:modified_time" content="2020-07-03T10:44:56.602Z">
 <meta property="article:author" content="mhyu">
 <meta property="article:tag" content="学习中">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/2020/07/02/gulp-skin/screenshot1.jpg">
+<meta name="twitter:image" content="http://yoursite.com/2020/07/02/gulp-skin/blue.jpg">
 
 
 
@@ -386,18 +386,45 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
       
 
       
-        <h2 id="开发背景"><a href="#开发背景" class="headerlink" title="开发背景"></a>开发背景</h2><p>为了平台切换主题的功能，gulp构建针对不同颜色主题的css，<font color="red">但是不同的主题有不同的变量scss文件(modules-variables.scss, var.scss)</font>，构建时需要手动操作文件，基于这个问题，在gulp构建时做了一些任务的处理（可在分支 mhyu-gulp查看）</p>
-<h2 id="构建任务命令总结"><a href="#构建任务命令总结" class="headerlink" title="构建任务命令总结"></a>构建任务命令总结</h2><p>1.蓝色皮肤构建命令(包括移动文件和构建css)  gulp allPScss<br>2.蓝色皮肤构建命令(构建css)  gulp PScss<br>3.绿色皮肤构建命令(包括移动文件和构建css)  gulp allJScss<br>4.绿色皮肤构建命令(构建css)  gulp JScss</p>
-<h2 id="Gulp配置"><a href="#Gulp配置" class="headerlink" title="Gulp配置"></a>Gulp配置</h2><p><img src="/2020/07/02/gulp-skin/screenshot1.jpg" alt="Gulp配置"></p>
-<p>该图为我们gulp构建时需要安装的插件，可以直接更新package.json 再npm install 即可以添加这些插件到项目<br>gulp最好全局添加 npm install -g gulp</p>
-<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p><img src="/2020/07/02/gulp-skin/screenshot2.jpg" alt="文件结构"></p>
-<p><img src="/2020/07/02/gulp-skin/screenshot3.jpg" alt="文件结构"></p>
-<h2 id="构建任务步骤"><a href="#构建任务步骤" class="headerlink" title="构建任务步骤"></a>构建任务步骤</h2><p>以构建蓝色主题皮肤css为例<br>1.首先删除common文件夹下的modules-variables.scss和element-theme-chalk文件夹下的var.scss默认变量文件<br>2.然后移动存放蓝色皮肤变量文件的文件夹(variable_P)下的文件到common和element-theme-chalk文件夹下<br><font color="red">可以将这两个步骤合并为一个任务 执行命令为 gulp copyP</font><br><img src="/2020/07/02/gulp-skin/screenshot4.jpg" alt="步骤"></p>
-<p><img src="/2020/07/02/gulp-skin/screenshot5.jpg" alt="步骤"></p>
-<p>3.执行正常的构建命令<br><img src="/2020/07/02/gulp-skin/screenshot6.jpg" alt="步骤"></p>
-<p>当然 也可以将上面所有的步骤整合为一个任务  <font color="red">执行命令为 gulp allPScss</font><br><img src="/2020/07/02/gulp-skin/screenshot7.jpg" alt="步骤"></p>
-<p>到此 构建结束 即会生成两个index.css<br><img src="/2020/07/02/gulp-skin/screenshot8.jpg" alt="步骤"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>构建的步骤简而言之就是主题颜色的变量文件覆盖更新后后构建css的过程，在gulpfile里面提供了两种选择(以蓝色主题为例)<br>1.如果默认的变量文件就是自己需要构建的主题色变量文件，即可直接执行构建css的任务(gulp PScss)<br>2.如果默认的变量文件不是自己需要构建的主题色变量文件，即可执行更新默认变量文件后构建css的任务(gulp allPScss)<br><strong>参考资料:</strong><a href="https://www.gulpjs.com.cn/docs/api/" target="_blank" rel="noopener">gulp文档</a></p>
+        <h1 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h1><p>该文章可结合我github上的demo一起看，更有效~<br><a href="https://github.com/BrightMhyu/gulp-skin-demo" target="_blank" rel="noopener">戳我看demo</a></p>
+<h1 id="开发背景"><a href="#开发背景" class="headerlink" title="开发背景"></a>开发背景</h1><p>为了实现切换主题的功能，<font color="red">不同的主题有不同的变量scss文件(var.scss)</font>(gulp构建针对不同颜色主题的css)</p>
+<h1 id="开发原理"><a href="#开发原理" class="headerlink" title="开发原理"></a>开发原理</h1><p>目前实现换肤方案的原理即通过切换不同命名空间（顶层class名）来达到样式的切换<br><img src="/2020/07/02/gulp-skin/blue.jpg" alt="blue"></p>
+<p><img src="/2020/07/02/gulp-skin/green.jpg" alt="green"></p>
+<h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><p>1.定义一个切换ClassName的方法。<br><img src="/2020/07/02/gulp-skin/changeEvent.jpg" alt="事件"><br>2.通过gulp生成不同主题的css压缩文件。<br><img src="/2020/07/02/gulp-skin/var.jpg" alt="变量"><br>3.在main.js文件中引用压缩文件，当切换顶部命名空间时，对应引用的样式自然生效达到换肤效果。<br>注：同时要选定默认的主题<br><img src="/2020/07/02/gulp-skin/main.jpg" alt="主题"></p>
+<h1 id="gulp部分"><a href="#gulp部分" class="headerlink" title="gulp部分#"></a>gulp部分#</h1><h2 id="Gulp配置"><a href="#Gulp配置" class="headerlink" title="Gulp配置"></a>Gulp配置</h2><p>需要引用的插件<br><img src="/2020/07/02/gulp-skin/gulp.jpg" alt="gulp"><br>该图为我们gulp构建时需要安装的插件(gulp最好全局添加 npm install -g gulp)</p>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p><img src="/2020/07/02/gulp-skin/var.jpg" alt="文件结构"><br>1.在index.scss里面引用了var.scss(默认)变量文件<br>2.variable_b和variable_j存放不同主题的变量文件<br>3.生成的css在custom-theme的不同文件夹中</p>
+<h2 id="构建任务步骤"><a href="#构建任务步骤" class="headerlink" title="构建任务步骤"></a>构建任务步骤</h2><p>以构建蓝色主题皮肤css为例<br>1.首先删除var.scss(默认)变量文件</p>
+<pre><code>//定义蓝色主题的顶层class名
+var BcustomThemeName = &apos;.custom-theme-blue&apos;;
+// gulp 删除默认的var变量文件
+gulp.task(&apos;BdelVar&apos;,function(){
+  return del([
+    &apos;./src/content/style/var.scss&apos;
+  ])
+})
+// gulp 将蓝色变量文件移动到index.scss引用的var.scss位置
+gulp.task(&apos;BcopyBtoC&apos;,function(){
+  return gulp.src(&apos;./src/content/style/variable_b/var.scss&apos;)
+  .pipe(gulp.dest(&apos;./src/content/style&apos;))
+})
+//gulp 生成css文件
+gulp.task(&apos;BsassStyles&apos;, function() {
+  return gulp
+    .src(&apos;./src/content/style/index.scss&apos;)
+    .pipe(sass())
+    .pipe(gulp.dest(&apos;./src/content/custom-theme/custom-theme-blue/common&apos;));
+});
+//gulp 给生成的css文件默认加上 前缀名
+gulp.task(&apos;BcssStyles&apos;, function() {
+  return gulp
+    .src(path.resolve(&apos;./src/content/custom-theme/custom-theme-blue/common/index.css&apos;))
+    .pipe(cssWrap({ selector: BcustomThemeName }))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest(&apos;./src/content/custom-theme/custom-theme-blue/common&apos;));
+});
+//合并所有任务一次构建
+gulp.task(&apos;blueCss&apos;,gulp.series(&apos;BdelVar&apos;,&apos;BcopyBtoC&apos;,&apos;BsassStyles&apos;,&apos;BcssStyles&apos;),function(){});</code></pre><p><img src="/2020/07/02/gulp-skin/gulp3.jpg" alt="gulp"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>构建的步骤简而言之就是主题颜色的变量文件更新后后构建css并加上前缀名的过程<br><strong>参考资料:</strong><a href="https://www.gulpjs.com.cn/docs/api/" target="_blank" rel="noopener">gulp文档</a></p>
 
       
     </div>
