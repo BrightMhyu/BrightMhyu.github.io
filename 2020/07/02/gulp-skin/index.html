@@ -120,7 +120,7 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 <meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/var.jpg">
 <meta property="og:image" content="http://yoursite.com/2020/07/02/gulp-skin/gulp3.jpg">
 <meta property="article:published_time" content="2020-07-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-07-03T10:44:56.602Z">
+<meta property="article:modified_time" content="2020-07-06T07:05:31.698Z">
 <meta property="article:author" content="mhyu">
 <meta property="article:tag" content="学习中">
 <meta name="twitter:card" content="summary">
@@ -391,30 +391,30 @@ color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canv
 <h1 id="开发原理"><a href="#开发原理" class="headerlink" title="开发原理"></a>开发原理</h1><p>目前实现换肤方案的原理即通过切换不同命名空间（顶层class名）来达到样式的切换<br><img src="/2020/07/02/gulp-skin/blue.jpg" alt="blue"></p>
 <p><img src="/2020/07/02/gulp-skin/green.jpg" alt="green"></p>
 <h1 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h1><p>1.定义一个切换ClassName的方法。<br><img src="/2020/07/02/gulp-skin/changeEvent.jpg" alt="事件"><br>2.通过gulp生成不同主题的css压缩文件。<br><img src="/2020/07/02/gulp-skin/var.jpg" alt="变量"><br>3.在main.js文件中引用压缩文件，当切换顶部命名空间时，对应引用的样式自然生效达到换肤效果。<br>注：同时要选定默认的主题<br><img src="/2020/07/02/gulp-skin/main.jpg" alt="主题"></p>
-<h1 id="gulp部分"><a href="#gulp部分" class="headerlink" title="gulp部分#"></a>gulp部分#</h1><h2 id="Gulp配置"><a href="#Gulp配置" class="headerlink" title="Gulp配置"></a>Gulp配置</h2><p>需要引用的插件<br><img src="/2020/07/02/gulp-skin/gulp.jpg" alt="gulp"><br>该图为我们gulp构建时需要安装的插件(gulp最好全局添加 npm install -g gulp)</p>
-<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><p><img src="/2020/07/02/gulp-skin/var.jpg" alt="文件结构"><br>1.在index.scss里面引用了var.scss(默认)变量文件<br>2.variable_b和variable_j存放不同主题的变量文件<br>3.生成的css在custom-theme的不同文件夹中</p>
-<h2 id="构建任务步骤"><a href="#构建任务步骤" class="headerlink" title="构建任务步骤"></a>构建任务步骤</h2><p>以构建蓝色主题皮肤css为例<br>1.首先删除var.scss(默认)变量文件</p>
-<pre><code>//定义蓝色主题的顶层class名
+<h1 id="gulp部分"><a href="#gulp部分" class="headerlink" title="gulp部分"></a>gulp部分</h1><h3 id="Gulp配置"><a href="#Gulp配置" class="headerlink" title="Gulp配置"></a>Gulp配置</h3><p>需要引用的插件<br><img src="/2020/07/02/gulp-skin/gulp.jpg" alt="gulp"><br>该图为我们gulp构建时需要安装的插件(gulp最好全局添加 npm install -g gulp)</p>
+<h3 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h3><p><img src="/2020/07/02/gulp-skin/var.jpg" alt="文件结构"><br>1.在index.scss里面引用了var.scss(默认)变量文件<br>2.variable_b和variable_j存放不同主题的变量文件<br>3.生成的css在custom-theme的不同文件夹中</p>
+<h3 id="构建任务步骤"><a href="#构建任务步骤" class="headerlink" title="构建任务步骤"></a>构建任务步骤</h3><p>以构建蓝色主题皮肤css为例</p>
+<pre><code>//1.定义蓝色主题的顶层class名
 var BcustomThemeName = &apos;.custom-theme-blue&apos;;
-// gulp 删除默认的var变量文件
+//2. gulp 删除默认的var变量文件
 gulp.task(&apos;BdelVar&apos;,function(){
   return del([
     &apos;./src/content/style/var.scss&apos;
   ])
 })
-// gulp 将蓝色变量文件移动到index.scss引用的var.scss位置
+//3. gulp 将蓝色变量文件移动到index.scss引用的var.scss位置
 gulp.task(&apos;BcopyBtoC&apos;,function(){
   return gulp.src(&apos;./src/content/style/variable_b/var.scss&apos;)
   .pipe(gulp.dest(&apos;./src/content/style&apos;))
 })
-//gulp 生成css文件
+//4. gulp 生成css文件
 gulp.task(&apos;BsassStyles&apos;, function() {
   return gulp
     .src(&apos;./src/content/style/index.scss&apos;)
     .pipe(sass())
     .pipe(gulp.dest(&apos;./src/content/custom-theme/custom-theme-blue/common&apos;));
 });
-//gulp 给生成的css文件默认加上 前缀名
+//5. gulp 给生成的css文件默认加上 前缀名
 gulp.task(&apos;BcssStyles&apos;, function() {
   return gulp
     .src(path.resolve(&apos;./src/content/custom-theme/custom-theme-blue/common/index.css&apos;))
@@ -422,9 +422,10 @@ gulp.task(&apos;BcssStyles&apos;, function() {
     .pipe(cleanCSS())
     .pipe(gulp.dest(&apos;./src/content/custom-theme/custom-theme-blue/common&apos;));
 });
-//合并所有任务一次构建
-gulp.task(&apos;blueCss&apos;,gulp.series(&apos;BdelVar&apos;,&apos;BcopyBtoC&apos;,&apos;BsassStyles&apos;,&apos;BcssStyles&apos;),function(){});</code></pre><p><img src="/2020/07/02/gulp-skin/gulp3.jpg" alt="gulp"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>构建的步骤简而言之就是主题颜色的变量文件更新后后构建css并加上前缀名的过程<br><strong>参考资料:</strong><a href="https://www.gulpjs.com.cn/docs/api/" target="_blank" rel="noopener">gulp文档</a></p>
+//6. 合并所有任务一次构建
+gulp.task(&apos;blueCss&apos;,gulp.series(&apos;BdelVar&apos;,&apos;BcopyBtoC&apos;,&apos;BsassStyles&apos;,&apos;BcssStyles&apos;),
+function(){});</code></pre><p><img src="/2020/07/02/gulp-skin/gulp3.jpg" alt="gulp"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>构建的步骤简而言之就是主题颜色的变量文件更新后后构建css并加上前缀名的过程<br><strong>参考资料:</strong><a href="https://www.gulpjs.com.cn/docs/api/" target="_blank" rel="noopener">gulp文档</a></p>
 
       
     </div>
